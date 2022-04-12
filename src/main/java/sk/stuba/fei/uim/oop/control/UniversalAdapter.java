@@ -1,17 +1,17 @@
 package sk.stuba.fei.uim.oop.control;
 
 
+import sk.stuba.fei.uim.oop.gui.Game;
+
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.*;
 import java.awt.event.*;
 
-public class UniversalAdapter extends JFrame implements MouseListener, MouseMotionListener, KeyListener, ChangeListener, ActionListener {
+public class UniversalAdapter extends JFrame implements ActionListener, ItemListener, KeyListener, MouseListener, MouseMotionListener {
     public UniversalAdapter() throws HeadlessException{
         super();
-
-
     }
 
     @Override
@@ -31,12 +31,12 @@ public class UniversalAdapter extends JFrame implements MouseListener, MouseMoti
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        System.out.println("klik " + e.getX() + " " + e.getY());
+
     }
 
     @Override
     public void mousePressed(MouseEvent e) {
-        System.out.println(e.getComponent());
+
     }
 
     @Override
@@ -62,13 +62,14 @@ public class UniversalAdapter extends JFrame implements MouseListener, MouseMoti
     public void mouseMoved(MouseEvent e) {
     }
 
+
     @Override
-    public void stateChanged(ChangeEvent e) {
+    public void actionPerformed(ActionEvent e) {
 
     }
 
     @Override
-    public void actionPerformed(ActionEvent e) {
+    public void itemStateChanged(ItemEvent e) {
 
     }
 }
