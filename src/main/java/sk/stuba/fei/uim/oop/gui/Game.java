@@ -40,7 +40,8 @@ public class Game extends JFrame implements ActionListener, ItemListener, KeyLis
         this.buttonRestart = new RestartButton();
         this.comboBox = new ComboBox();
         this.boardPanel = new BoardPanel(size);
-        this.tilePanel = new TilePanel();
+        this.tilePanel = new TilePanel(size);
+        fillRestartedBoard();
     }
 
 
@@ -58,7 +59,7 @@ public class Game extends JFrame implements ActionListener, ItemListener, KeyLis
     public void setFrameParams(){
         this.setSize(720, 720);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        this.setResizable(true);
+        this.setResizable(false);
         this.setLayout(new BorderLayout());
     }
 
@@ -70,13 +71,14 @@ public class Game extends JFrame implements ActionListener, ItemListener, KeyLis
         }
         if(e.getSource() == buttonRestart){
             reinitializeFrame((int)comboBox.getSelectedItem());
-            fillRestartedBoard();
         }
+
     }
 
     private void fillRestartedBoard() {
         boardPanel.fillRestartedPanel(size);
     }
+
 
     @Override
     public void keyTyped(KeyEvent e) {
@@ -94,6 +96,8 @@ public class Game extends JFrame implements ActionListener, ItemListener, KeyLis
 
     @Override
     public void mouseClicked(MouseEvent e) {
+
+
 
     }
 
@@ -136,8 +140,13 @@ public class Game extends JFrame implements ActionListener, ItemListener, KeyLis
     public void reinitializeFrame(int size){
         this.remove(boardPanel);
         this.add(boardPanel = new BoardPanel(size));
+        setBoardSize(size);
         this.revalidate();
         this.repaint();
+        fillRestartedBoard();
+    }
 
+    private void setBoardSize(int size){
+        this.size = size;
     }
 }
