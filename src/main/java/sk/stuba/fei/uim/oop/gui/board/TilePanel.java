@@ -1,111 +1,63 @@
 package sk.stuba.fei.uim.oop.gui.board;
 
-import javax.imageio.ImageIO;
+import sk.stuba.fei.uim.oop.control.listeners.TilePanelListener;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.util.Objects;
 
 
-
-public class TilePanel extends JPanel implements MouseListener {
-    private Color prevColor;
-    private BoardPanel boardPanel;
-    private final int size;
-    private int xCoord, yCoord;
-    private String[] stringToInt;
+public class TilePanel extends JPanel {
     private boolean tileTaken;
+    private int owner;
+    private final JLabel picLabel;
+    private final int heightSize;
+    private final int widthSize;
+    private boolean playable;
+
 
     public TilePanel(int size){
-        this.addMouseListener(this);
-        this.size = size;
+        this.addMouseListener(new TilePanelListener(this));
+        this.setLayout(new BorderLayout());
+        this.tileTaken = false;
+        this.heightSize = 720/size;
+        this.widthSize = 720/size;
+        this.picLabel = new JLabel("", SwingConstants.CENTER);
+        this.add(picLabel, BorderLayout.CENTER);
     }
 
 
-    public void initialPaint(int owner) {
-        BufferedImage pic = null;
-        if(owner == 1){
-            try {
-                pic = ImageIO.read(Objects.requireNonNull(TilePanel.class.getResourceAsStream("/erikb.png")));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+    public boolean isPlayable() {return playable;}
+
+    public void setPlayable(boolean playable) {
+        this.playable = playable;
+        this.setOwner(2);}
+
+    public int getOwner() {return owner;}
+
+    public void setOwner(int owner) {this.owner = owner;}
+
+    public boolean isTileTaken() {return tileTaken;}
+
+    public void setTileTaken(boolean tileTaken) {this.tileTaken = tileTaken;}
+
+
+
+
+    public void paintStone(){
+        if(this.getOwner() == 1) {
+            picLabel.setIcon(new ImageIcon(new javax.swing.ImageIcon(Objects.requireNonNull(getClass().getResource("/erikb.png"))).getImage().getScaledInstance(widthSize-15, heightSize-15, Image.SCALE_SMOOTH)));
         }
-        else if(owner == 0){
-            try {
-                pic = ImageIO.read(Objects.requireNonNull(TilePanel.class.getResourceAsStream("/erikw.png")));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        JLabel picLabel = new JLabel(new ImageIcon(pic));
-
-
-
-//        switch (size){
-//            case 6:
-//                picLabel.setSize(this.getWidth(), this.getHeight());
-//            case 8:
-//                pic.getScaledInstance(80, 80, Image.SCALE_SMOOTH);
-//            case 10:
-//                pic.getScaledInstance(60, 60, Image.SCALE_SMOOTH);
-//            case 12:
-//                pic.getScaledInstance(40, 40, Image.SCALE_SMOOTH);
-//        }
-
-        this.add(picLabel, BorderLayout.PAGE_END);
-        this.repaint();
-        this.revalidate();
-    }
-
-    public void paint(int owner, int x, int y){
-
-    }
-
-    public boolean isTileTaken() {
-        return tileTaken;
-    }
-
-    public void setTileTaken(boolean tileTaken) {
-        this.tileTaken = tileTaken;
-    }
-
-
-    @Override
-    public void mouseClicked(MouseEvent e) {
-        stringToInt = e.getComponent().getName().split(" ");
-        xCoord = Integer.parseInt(stringToInt[0]);
-        yCoord = Integer.parseInt(stringToInt[1]);
-        System.out.println(xCoord + " " + yCoord);
-        if(!isTileTaken()){
-//            paint()
+        else if(this.getOwner() == 0) {
+            picLabel.setIcon(new ImageIcon(new javax.swing.ImageIcon(Objects.requireNonNull(getClass().getResource("/erikw.png"))).getImage().getScaledInstance(widthSize-15, heightSize-15, Image.SCALE_SMOOTH)));
         }
     }
 
-
-
-    @Override
-    public void mousePressed(MouseEvent e) {
-
+    public void paintPlayableStone(){
+        picLabel.setIcon(new ImageIcon(new javax.swing.ImageIcon(Objects.requireNonNull(getClass().getResource("/erikblank.png"))).getImage().getScaledInstance(widthSize-15, heightSize-15, Image.SCALE_SMOOTH)));
     }
 
-    @Override
-    public void mouseReleased(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mouseEntered(MouseEvent e) {
-        prevColor = this.getBackground();
-        this.setBackground(new Color (240,160,160));
-    }
-
-    @Override
-    public void mouseExited(MouseEvent e) {
-        this.setBackground(prevColor);
+    public void deletePlayableStone(){
+        picLabel.setIcon(new ImageIcon());
     }
 
 }
