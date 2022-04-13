@@ -1,4 +1,4 @@
-package sk.stuba.fei.uim.oop.gui.board;
+package sk.stuba.fei.uim.oop.gui.menu;
 
 import javax.swing.*;
 import java.awt.*;
