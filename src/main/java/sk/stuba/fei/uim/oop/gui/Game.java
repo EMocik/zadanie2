@@ -16,7 +16,7 @@ public class Game extends JFrame {
     private RestartButton buttonRestart;
     private SideMenu sideMenu;
     private BoardPanel boardPanel;
-    private TilePanel tilePanel;
+//    private TilePanel tilePanel;
 
 
     public Game(){
@@ -31,7 +31,7 @@ public class Game extends JFrame {
         this.add(boardPanel, BorderLayout.CENTER);
         this.add(sideMenu, BorderLayout.SOUTH);
         this.setVisible(true);
-        new GameLogic(this, boardPanel, tilePanel, size);
+        new GameLogic(this, boardPanel, size);
     }
 
     public ComboBox getComboBox() {
@@ -54,7 +54,7 @@ public class Game extends JFrame {
         this.buttonRestart = new RestartButton();
         this.comboBox = new ComboBox();
         this.boardPanel = new BoardPanel(size);
-        this.tilePanel = new TilePanel(size);
+//        this.tilePanel = new TilePanel(size);
         fillRestartedBoard();
     }
 

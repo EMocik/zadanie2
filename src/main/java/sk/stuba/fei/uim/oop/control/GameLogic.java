@@ -16,17 +16,15 @@ public class GameLogic {
     private BoardPanel boardPanel;
     private final TilePanel[][] tilePanels;
     private Game game;
-    private int player;
-    private int oponent;
     private TilePanel tilePanel;
     private int stoneCount;
     private int size;
 
-    public GameLogic(Game game, BoardPanel boardPanel, TilePanel tilePanel, int size){
+    public GameLogic(Game game, BoardPanel boardPanel, int size){
         this.game = game;
         this.size = size;
         this.boardPanel = boardPanel;
-        this.tilePanel = tilePanel;
+//        this.tilePanel = boardPanel.getPlayTile();
         this.tilePanels = boardPanel.getTilePanels();
 //        tilePanels[0][0].paintPlayableStone();
 //        this.checkHumanSouthDirection(2,2, 1, 0);
@@ -35,29 +33,52 @@ public class GameLogic {
     }
 
     private void gameStart() {
-        int roundCounter = 0;
+        int roundCounter = 1;
+        boardPanel.setRoundEnd(false);
         while(true) {
-            if(roundCounter % 2 == 0){
-                tilePanel.setPlayer(0);
-                tilePanel.setOponent(1);
+
+
+            if (!boardPanel.isRoundEnd()) {
+                if (roundCounter % 2 == 1) {
+                    boardPanel.getPlayTile().setPlayer(1);
+                    boardPanel.getPlayTile().setOponent(0);
+                    this.checkDirections(boardPanel.getPlayTile().getPlayer(), boardPanel.getPlayTile().getOponent());
+                    this.checkForPlayableTiles();
+                }
             }
-            else if(roundCounter % 2 == 1){
-                tilePanel.setPlayer(1);
-                tilePanel.setOponent(0);
+            if(boardPanel.isRoundEnd()) {
+                roundCounter++;
+
+                this.deletePlayableStones();
+
+                if (roundCounter % 2 == 0) {
+//                this.deletePlayableStones();
+//                tilePanel.setPlayer(0);
+//                tilePanel.setOponent(1);
+                    boardPanel.setRoundEnd(false);
+                }
+
             }
-            this.isTurn(tilePanel.getPlayer());
-            this.checkDirections(tilePanel.getPlayer(), tilePanel.getOponent());
-            this.checkForPlayableTiles();
 
-
-
-            roundCounter++;
+            if(roundCounter == 3){
                 break;
+            }
+            while(!boardPanel.isRoundEnd()){
+
+            }
+
         }
     }
 
-    private int isTurn(int player) {
-        return player;
+
+    private void deletePlayableStones(){
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                tilePanels[i][j].deletePlayableStone();
+                tilePanels[i][j].setPlayable(false);
+            }
+        }
+
     }
 
     private void checkDirections(int player, int oponent){
@@ -186,7 +207,10 @@ public class GameLogic {
         }
         if(tilePanels[x][y+1].getOwner() == oponent){
             for(int i = y+1; i < size; i++){
-                if(tilePanels[x][i].getOwner() == oponent){
+                if(tilePanels[x][i].getOwner() == 2){
+                    break;
+                }
+                else if(tilePanels[x][i].getOwner() == oponent){
                     continue;
                 }
                 else if(tilePanels[x][i].getOwner() == 3){
@@ -206,7 +230,10 @@ public class GameLogic {
         }
         if(tilePanels[x][y-1].getOwner() == oponent){
             for(int i = y-1; i > 0; i--){
-                if(tilePanels[x][i].getOwner() == oponent){
+                if(tilePanels[x][i].getOwner() == 2){
+                    break;
+                }
+                else if(tilePanels[x][i].getOwner() == oponent){
                     continue;
                 }
                 else if(tilePanels[x][i].getOwner() == 3){
@@ -226,7 +253,10 @@ public class GameLogic {
         }
         if(tilePanels[x+1][y].getOwner() == oponent){
             for(int i = x+1; i < size; i++){
-                if(tilePanels[i][y].getOwner() == oponent){
+                if(tilePanels[i][y].getOwner() == 2){
+                    break;
+                }
+                else if(tilePanels[i][y].getOwner() == oponent){
                     continue;
                 }
                 else if(tilePanels[i][y].getOwner() == 3){
@@ -246,7 +276,10 @@ public class GameLogic {
         }
         if(tilePanels[x-1][y].getOwner() == oponent){
             for(int i = x-1; i >= 0; i--){
-                if(tilePanels[i][y].getOwner() == oponent){
+                if(tilePanels[i][y].getOwner() == 2){
+                    break;
+                }
+                else if(tilePanels[i][y].getOwner() == oponent){
                     continue;
                 }
                 else if(tilePanels[i][y].getOwner() == 3){

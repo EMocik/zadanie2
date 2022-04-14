@@ -1,5 +1,6 @@
 package sk.stuba.fei.uim.oop.control.listeners;
 
+import sk.stuba.fei.uim.oop.gui.board.BoardPanel;
 import sk.stuba.fei.uim.oop.gui.board.TilePanel;
 
 import java.awt.*;
@@ -8,11 +9,12 @@ import java.awt.event.MouseListener;
 
 public class TilePanelListener implements MouseListener {
     private final TilePanel tilePanel;
-    private Color prevColor;
+    private BoardPanel boardPanel;
 
 
-    public TilePanelListener(TilePanel tilePanel) {
+    public TilePanelListener(TilePanel tilePanel, BoardPanel boardPanel) {
         this.tilePanel = tilePanel;
+        this.boardPanel = boardPanel;
     }
 
     @Override
@@ -26,7 +28,12 @@ public class TilePanelListener implements MouseListener {
             yCoord = Integer.parseInt(stringToInt[1]);
             System.out.println(xCoord + " " + yCoord);
 //            tilePanel.setOwner(1);
-            tilePanel.paintStone(tilePanel.getPlayer());
+            boardPanel.setPlayTile(tilePanel);
+            tilePanel.paintStone(1);
+            tilePanel.setOwner(1);
+            tilePanel.setPlayable(false);
+//            tilePanel.deletePlayableStone();
+            boardPanel.setRoundEnd(true);
         }
     }
 
@@ -43,7 +50,7 @@ public class TilePanelListener implements MouseListener {
     @Override
     public void mouseEntered(MouseEvent e) {
         if(tilePanel.isPlayable()){
-            tilePanel.paintStone(tilePanel.getPlayer());
+            tilePanel.paintStone(1);
         }
     }
 

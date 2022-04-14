@@ -9,6 +9,30 @@ import java.util.Objects;
 public class TilePanel extends JPanel {
     private boolean tileTaken;
     private int owner;
+    public int player;
+    public int oponent;
+    private int size;
+    private final JLabel picLabel;
+    private final int heightSize;
+    private final int widthSize;
+    private boolean playable;
+
+
+    public TilePanel(int size, BoardPanel boardPanel){
+        this.addMouseListener(new TilePanelListener(this, boardPanel));
+        this.setLayout(new BorderLayout());
+        this.tileTaken = false;
+        this.size = size;
+        this.heightSize = 720/size;
+        this.widthSize = 720/size;
+        this.picLabel = new JLabel("", SwingConstants.CENTER);
+        this.add(picLabel, BorderLayout.CENTER);
+    }
+
+
+
+
+
 
     public int getPlayer() {
         return player;
@@ -26,30 +50,15 @@ public class TilePanel extends JPanel {
         this.oponent = oponent;
     }
 
-    private int player;
-    private int oponent;
-    private final JLabel picLabel;
-    private final int heightSize;
-    private final int widthSize;
-    private boolean playable;
-
-
-    public TilePanel(int size){
-        this.addMouseListener(new TilePanelListener(this));
-        this.setLayout(new BorderLayout());
-        this.tileTaken = false;
-        this.heightSize = 720/size;
-        this.widthSize = 720/size;
-        this.picLabel = new JLabel("", SwingConstants.CENTER);
-        this.add(picLabel, BorderLayout.CENTER);
-    }
-
-
     public boolean isPlayable() {return playable;}
 
     public void setPlayable(boolean playable) {
         this.playable = playable;
-        this.setOwner(2);}
+        if(playable){
+            this.paintPlayableStone();
+            this.setOwner(2);
+        }
+    }
 
     public int getOwner() {return owner;}
 
@@ -76,7 +85,9 @@ public class TilePanel extends JPanel {
     }
 
     public void deletePlayableStone(){
-        picLabel.setIcon(new ImageIcon());
+        if(this.isPlayable()) {
+            picLabel.setIcon(new ImageIcon());
+        }
     }
 
 }
