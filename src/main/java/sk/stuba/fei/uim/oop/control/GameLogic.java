@@ -9,6 +9,8 @@ import java.awt.*;
 import java.util.*;
 import java.util.List;
 
+import static java.lang.Math.abs;
+
 
 public class GameLogic {
     private BoardPanel boardPanel;
@@ -33,30 +35,52 @@ public class GameLogic {
     }
 
     private void gameStart() {
-        int roundCounter = 1;
+        int roundCounter = 0;
         while(true) {
             if(roundCounter % 2 == 0){
-                this.player = 0;
-                this.oponent = 1;
+                tilePanel.setPlayer(0);
+                tilePanel.setOponent(1);
             }
             else if(roundCounter % 2 == 1){
-                this.player = 1;
-                this.oponent = 0;
+                tilePanel.setPlayer(1);
+                tilePanel.setOponent(0);
             }
-            this.checkForPlayableTiles(player, oponent);
+            this.isTurn(tilePanel.getPlayer());
+            this.checkDirections(tilePanel.getPlayer(), tilePanel.getOponent());
+            this.checkForPlayableTiles();
+
 
 
             roundCounter++;
-            break;
+                break;
+        }
+    }
+
+    private int isTurn(int player) {
+        return player;
+    }
+
+    private void checkDirections(int player, int oponent){
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                this.checkSouthDirection(i, j, player, oponent);
+                this.checkNorthDirection(i, j, player, oponent);
+                this.checkEastDirection(i, j, player, oponent);
+                this.checkWestDirection(i, j, player, oponent);
+                this.checkNorthWestDirection(i, j, player, oponent);
+                this.checkSouthWestDirection(i, j, player, oponent);
+                this.checkSouthEastDirection(i, j, player, oponent);
+                this.checkNorthEastDirection(i, j, player, oponent);
+            }
         }
     }
 
 
-    private void checkForPlayableTiles(int player, int oponent) {
+
+
+    private void checkForPlayableTiles() {
         for (int i = 0; i < size; i++){
             for (int j = 0; j < size; j++){
-                checkSouthDirection(i, j, player, oponent);
-                checkNorthDirection(i, j, player, oponent);
                 if(tilePanels[i][j].isPlayable()){
                     tilePanels[i][j].paintPlayableStone();
                 }
@@ -65,16 +89,144 @@ public class GameLogic {
 
     }
 
+    private void checkNorthEastDirection(int x, int y, int player, int oponent) {
+        if(y+1 == size || x == 0){
+            return;
+        }
+        if(tilePanels[x][y].getOwner() != player){
+            return;
+        }
+        else if(tilePanels[x-1][y+1].getOwner() == oponent){
+                for (int j = y+1; j < size; j++) {
+                    if (tilePanels[size-1-j][j].getOwner() == oponent) {
+                        continue;
+                    } else if (tilePanels[size-1-j][j].getOwner() == 3) {
+                        tilePanels[size-1-j][j].setPlayable(true);
+                        break;
+                    } else if (tilePanels[size-1-j][j].getOwner() == player) {
+                        break;
+                    }
+                }
+        }
+    }
+
+    private void checkSouthEastDirection(int x, int y, int player, int oponent) {
+        if(y+1 == size || x+1 == size){
+            return;
+        }
+        if(tilePanels[x][y].getOwner() != player){
+            return;
+        }
+        else if(tilePanels[x+1][y+1].getOwner() == oponent){
+            for(int i = y+1; i < size; i++){
+                if(tilePanels[i][i].getOwner() == oponent){
+                    continue;
+                }
+                else if(tilePanels[i][i].getOwner() == 3){
+                    tilePanels[i][i].setPlayable(true);
+                    break;
+                }
+                else if(tilePanels[i][i].getOwner() == player){
+                    break;
+                }
+            }
+        }
+    }
+
+
+    private void checkSouthWestDirection(int x, int y, int player, int oponent) {
+        if(y == 0 || x+1 == size){
+            return;
+        }
+        if(tilePanels[x][y].getOwner() != player){
+            return;
+        }
+        else if(tilePanels[x+1][y-1].getOwner() == oponent){
+//            for(int i = y-1; i > 0; i--){
+                for(int j = x+1; j < size; j++) {
+                    if (tilePanels[j][size-1-j].getOwner() == oponent) {
+                        continue;
+                    } else if (tilePanels[j][size-1-j].getOwner() == 3) {
+                        tilePanels[j][size-1-j].setPlayable(true);
+                        break;
+                    } else if (tilePanels[j][size-1-j].getOwner() == player) {
+                        break;
+                    }
+                }
+//            }
+        }
+    }
+
+    private void checkNorthWestDirection(int x, int y, int player, int oponent) {
+        if(y == 0 || x == 0){
+            return;
+        }
+        if(tilePanels[x][y].getOwner() != player){
+            return;
+        }
+        else if(tilePanels[x-1][y-1].getOwner() == oponent){
+            for(int i = y-1; i > 0; i--){
+                if(tilePanels[i][i].getOwner() == oponent){
+                    continue;
+                }
+                else if(tilePanels[i][i].getOwner() == 3){
+                    tilePanels[i][i].setPlayable(true);
+                    break;
+                }
+                else if(tilePanels[i][i].getOwner() == player){
+                    break;
+                }
+            }
+        }
+    }
+
+    private void checkEastDirection(int x, int y, int player, int oponent) {
+        if(y+1 == size){
+            return;
+        }
+        if(tilePanels[x][y+1].getOwner() == oponent){
+            for(int i = y+1; i < size; i++){
+                if(tilePanels[x][i].getOwner() == oponent){
+                    continue;
+                }
+                else if(tilePanels[x][i].getOwner() == 3){
+                    tilePanels[x][i].setPlayable(true);
+                    break;
+                }
+                else if(tilePanels[x][i].getOwner() == player){
+                    break;
+                }
+            }
+        }
+    }
+
+    private void checkWestDirection(int x, int y, int player, int oponent) {
+        if(y == 0){
+            return;
+        }
+        if(tilePanels[x][y-1].getOwner() == oponent){
+            for(int i = y-1; i > 0; i--){
+                if(tilePanels[x][i].getOwner() == oponent){
+                    continue;
+                }
+                else if(tilePanels[x][i].getOwner() == 3){
+                    tilePanels[x][i].setPlayable(true);
+                    break;
+                }
+                else if(tilePanels[x][i].getOwner() == player){
+                    break;
+                }
+            }
+        }
+    }
+
     public void checkSouthDirection(int x, int y, int player, int oponent){
         if(x+1 == size){
             return;
         }
         if(tilePanels[x+1][y].getOwner() == oponent){
             for(int i = x+1; i < size; i++){
-                if(tilePanels[i][y].getOwner() == 2){
-                    break;
-                }
-                else if(tilePanels[i][y].getOwner() == oponent){
+                if(tilePanels[i][y].getOwner() == oponent){
                     continue;
                 }
                 else if(tilePanels[i][y].getOwner() == 3){
@@ -93,11 +245,8 @@ public class GameLogic {
             return;
         }
         if(tilePanels[x-1][y].getOwner() == oponent){
-            for(int i = x-1; i < size; i++){
-                if(tilePanels[i][y].getOwner() == 2){
-                    break;
-                }
-                else if(tilePanels[i][y].getOwner() == oponent){
+            for(int i = x-1; i >= 0; i--){
+                if(tilePanels[i][y].getOwner() == oponent){
                     continue;
                 }
                 else if(tilePanels[i][y].getOwner() == 3){

@@ -9,6 +9,25 @@ import java.util.Objects;
 public class TilePanel extends JPanel {
     private boolean tileTaken;
     private int owner;
+
+    public int getPlayer() {
+        return player;
+    }
+
+    public void setPlayer(int player) {
+        this.player = player;
+    }
+
+    public int getOponent() {
+        return oponent;
+    }
+
+    public void setOponent(int oponent) {
+        this.oponent = oponent;
+    }
+
+    private int player;
+    private int oponent;
     private final JLabel picLabel;
     private final int heightSize;
     private final int widthSize;
@@ -43,11 +62,11 @@ public class TilePanel extends JPanel {
 
 
 
-    public void paintStone(){
-        if(this.getOwner() == 1) {
+    public void paintStone(int player){
+        if(player == 1) {
             picLabel.setIcon(new ImageIcon(new javax.swing.ImageIcon(Objects.requireNonNull(getClass().getResource("/erikb.png"))).getImage().getScaledInstance(widthSize-15, heightSize-15, Image.SCALE_SMOOTH)));
         }
-        else if(this.getOwner() == 0) {
+        else if(player == 0) {
             picLabel.setIcon(new ImageIcon(new javax.swing.ImageIcon(Objects.requireNonNull(getClass().getResource("/erikw.png"))).getImage().getScaledInstance(widthSize-15, heightSize-15, Image.SCALE_SMOOTH)));
         }
     }

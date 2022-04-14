@@ -17,15 +17,16 @@ public class TilePanelListener implements MouseListener {
 
     @Override
     public void mouseClicked(MouseEvent e) {
-        int xCoord, yCoord;
-        String[] stringToInt;
-        stringToInt = e.getComponent().getName().split(" ");
-        xCoord = Integer.parseInt(stringToInt[0]);
-        yCoord = Integer.parseInt(stringToInt[1]);
-        if(!tilePanel.isTileTaken()){
+        if(tilePanel.isPlayable()){
+
+            int xCoord, yCoord;
+            String[] stringToInt;
+            stringToInt = e.getComponent().getName().split(" ");
+            xCoord = Integer.parseInt(stringToInt[0]);
+            yCoord = Integer.parseInt(stringToInt[1]);
             System.out.println(xCoord + " " + yCoord);
-            tilePanel.setOwner(1);
-            tilePanel.paintStone();
+//            tilePanel.setOwner(1);
+            tilePanel.paintStone(tilePanel.getPlayer());
         }
     }
 
@@ -41,11 +42,15 @@ public class TilePanelListener implements MouseListener {
 
     @Override
     public void mouseEntered(MouseEvent e) {
-        prevColor = tilePanel.getBackground();
-        tilePanel.setBackground(new Color(240,160,160));
+        if(tilePanel.isPlayable()){
+            tilePanel.paintStone(tilePanel.getPlayer());
+        }
     }
 
     @Override
-    public void mouseExited(MouseEvent e) {tilePanel.setBackground(prevColor);
+    public void mouseExited(MouseEvent e) {
+        if(tilePanel.isPlayable()) {
+            tilePanel.paintPlayableStone();
+        }
     }
 }

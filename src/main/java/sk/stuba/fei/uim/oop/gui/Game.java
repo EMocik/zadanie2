@@ -62,6 +62,8 @@ public class Game extends JFrame {
     private void addListeners(){
         this.comboBox.addActionListener(new GameFrameListener(this));
         this.buttonRestart.addActionListener(new GameFrameListener(this));
+        this.setFocusable(true);
+        this.addKeyListener(new GameFrameListener(this));
     }
 
     private void setFrameParams(){

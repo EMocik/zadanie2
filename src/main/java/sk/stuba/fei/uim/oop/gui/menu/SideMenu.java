@@ -8,5 +8,6 @@ public class SideMenu extends JPanel {
     public SideMenu() {
         super();
         this.setBackground(Color.lightGray);
+        this.setFocusable(false);
     }
 }
