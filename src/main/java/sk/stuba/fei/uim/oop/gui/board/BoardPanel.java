@@ -71,22 +71,22 @@ public class BoardPanel extends JPanel {
                 if (i == ((size/2)-1) && (j == (size/2)-1)){
 //                    playTile = tilePanels[i][j];
                     tilePanels[i][j].setOwner(1);
-                    tilePanels[i][j].paintStone(1);
+                    tilePanels[i][j].paintStone(1, 0);
                     tilePanels[i][j].setTileTaken(true);
                 }
                 else if((i == (size/2) && (j == (size/2)-1))){
                     tilePanels[i][j].setOwner(0);
-                    tilePanels[i][j].paintStone(0);
+                    tilePanels[i][j].paintStone(0, 0);
                     tilePanels[i][j].setTileTaken(true);
                 }
                 else if (i == ((size/2)-1) && j == (size/2)){
                     tilePanels[i][j].setOwner(0);
-                    tilePanels[i][j].paintStone(0);
+                    tilePanels[i][j].paintStone(0, 0);
                     tilePanels[i][j].setTileTaken(true);
                 }
                 else if((i == size/2) && (j == size/2)){
                     tilePanels[i][j].setOwner(1);
-                    tilePanels[i][j].paintStone(1);
+                    tilePanels[i][j].paintStone(1, 0);
                     tilePanels[i][j].setTileTaken(true);
                 }
                 else

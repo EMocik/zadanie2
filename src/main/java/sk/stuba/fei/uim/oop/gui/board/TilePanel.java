@@ -91,7 +91,8 @@ public class TilePanel extends JPanel {
 
 
 
-    public void paintStone(int player){
+    public void paintStone(int player, int turn){
+//        boardPanel.getGame().getCurr
         if(player == 1) {
             picLabel.setIcon(new ImageIcon(new javax.swing.ImageIcon(Objects.requireNonNull(getClass().getResource("/erikb.png"))).getImage().getScaledInstance(widthSize-15, heightSize-15, Image.SCALE_SMOOTH)));
             this.setOwner(player);

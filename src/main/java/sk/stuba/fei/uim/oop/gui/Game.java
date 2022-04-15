@@ -7,6 +7,7 @@ import sk.stuba.fei.uim.oop.control.listeners.GameFrameListener;
 import sk.stuba.fei.uim.oop.gui.menu.*;
 import sk.stuba.fei.uim.oop.gui.menu.labels.BoardSizeLabel;
 import sk.stuba.fei.uim.oop.gui.menu.labels.CurrentPlayerLabel;
+import sk.stuba.fei.uim.oop.gui.menu.labels.CurrentScoreLabel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -17,6 +18,8 @@ public class Game extends JFrame {
     private RestartButton buttonRestart;
     private SideMenu sideMenu;
     private BoardPanel boardPanel;
+    @Getter
+    private CurrentScoreLabel currentScoreLabel;
     private BoardSizeLabel boardSizeLabel;
     @Getter
     private CurrentPlayerLabel currentPlayerLabel;
@@ -31,10 +34,7 @@ public class Game extends JFrame {
         this.setFrameParams();
         this.addListeners();
 
-        sideMenu.add(boardSizeLabel, BorderLayout.LINE_START);
-        sideMenu.add(comboBox);
-        sideMenu.add(currentPlayerLabel);
-        sideMenu.add(buttonRestart, BorderLayout.LINE_END);
+        this.addToSideMenu();
 
         this.add(boardPanel, BorderLayout.CENTER);
         this.add(sideMenu, BorderLayout.SOUTH);
@@ -63,6 +63,7 @@ public class Game extends JFrame {
     private void initComponents(int size){
         this.sideMenu = new SideMenu();
         this.currentPlayerLabel = new CurrentPlayerLabel();
+        this.currentScoreLabel = new CurrentScoreLabel();
         this.boardSizeLabel = new BoardSizeLabel(size);
         this.buttonRestart = new RestartButton();
         this.comboBox = new ComboBox();
@@ -77,6 +78,14 @@ public class Game extends JFrame {
         this.buttonRestart.addActionListener(new GameFrameListener(this));
         this.setFocusable(true);
         this.addKeyListener(new GameFrameListener(this));
+    }
+
+    private void addToSideMenu(){
+        sideMenu.add(boardSizeLabel, BorderLayout.LINE_START);
+        sideMenu.add(comboBox);
+        sideMenu.add(currentPlayerLabel);
+        sideMenu.add(currentScoreLabel);
+        sideMenu.add(buttonRestart, BorderLayout.LINE_END);
     }
 
     private void setFrameParams(){

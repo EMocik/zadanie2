@@ -38,20 +38,23 @@ public class GameLogic {
         this.deletePlayableStones();
         this.checkDirections(0, 1);
 
-        this.turnJumpedStonesComputer(this.placeStoneComputer(0), 0);
+//        this.turnJumpedStonesComputer(this.placeStoneComputer(0), 0);
+        this.placeStoneComputer();
         this.deletePlayableStones();
         this.humanTurn();
     }
 
-    private void turnJumpedStonesComputer(PlayablePosition position, int player) {
-        for (int i = 0; i < size; i++) {
-            for (int j = 0; j < size; j++) {
-                if(i == position.getX() && j == position.getY()) {
-                    for(int k = 0; k < tilePanels[i][j].getPlayablePosition().size(); k++){
-                        PlayablePosition turnPanels = tilePanels[i][j].getPlayablePosition().get(k);
-                        tilePanels[turnPanels.getX()][turnPanels.getY()].paintStone(player);
-                        tilePanels[turnPanels.getX()][turnPanels.getY()].setOwner(player);
-                        tilePanels[turnPanels.getX()][turnPanels.getY()].setPlayable(false);
+    private void turnJumpedStonesComputer(PlayablePosition position) {
+        if (position != null) {
+            for (int i = 0; i < size; i++) {
+                for (int j = 0; j < size; j++) {
+                    if (i == position.getX() && j == position.getY()) {
+                        for (int k = 0; k < tilePanels[i][j].getPlayablePosition().size(); k++) {
+                            PlayablePosition turnPanels = tilePanels[i][j].getPlayablePosition().get(k);
+                            tilePanels[turnPanels.getX()][turnPanels.getY()].paintStone(0, 0);
+                            tilePanels[turnPanels.getX()][turnPanels.getY()].setOwner(0);
+                            tilePanels[turnPanels.getX()][turnPanels.getY()].setPlayable(false);
+                        }
                     }
                 }
             }
@@ -76,17 +79,29 @@ public class GameLogic {
         return true;
     }
 
-    public PlayablePosition placeStoneComputer(int player) {
+    public void placeStoneComputer() {
+        int xPos = -1, yPos = -1;
+        int sizeOfTurnableStones = 0;
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
+
+
                 if(tilePanels[i][j].isPlayable()){
-                    tilePanels[i][j].paintStone(player);
-                    tilePanels[i][j].setPlayable(false);
-                    return new PlayablePosition(i, j);
+                    if(tilePanels[i][j].getPlayablePosition().size() > sizeOfTurnableStones){
+                        sizeOfTurnableStones = tilePanels[i][j].getPlayablePosition().size();
+                        xPos = i;
+                        yPos = j;
+                    }
                 }
             }
         }
-        return null;
+        if (sizeOfTurnableStones > 0) {
+            tilePanels[xPos][yPos].paintStone(0, 0);
+            tilePanels[xPos][yPos].setPlayable(false);
+            this.turnJumpedStonesComputer(new PlayablePosition(xPos, yPos));
+        }
+
+
     }
 
 
@@ -95,6 +110,7 @@ public class GameLogic {
             for (int j = 0; j < size; j++) {
                 if(tilePanels[i][j].isPlayable()) {
                     tilePanels[i][j].deletePlayableStone();
+                    tilePanels[i][j].getPlayablePosition().clear();
                     tilePanels[i][j].setPlayable(false);
                     tilePanels[i][j].setOwner(3);
                 }
@@ -130,6 +146,23 @@ public class GameLogic {
         }
     }
 
+//    private void checkDirections(int x, int y, int xOffset, int yOffset){
+//        actualPos = tilePanels[x][y];
+//        nextPos = tilePanels[x+xOffset][y+yOffset];
+//
+//        for (int i = 1; i < size; i++) {
+//            if(nextPos.getOwner() == oponent){
+//                nieco.add(nextPos);
+//            }
+//            else if(nextPos.getOwner() == empty){
+//                nextPos.setPlayable(true);
+//            }
+//            nextPos = tilePanels[x+xOffset*i][y+yOffset*i];
+//        }
+//    }
+
+
+
     private void checkDirection(int x, int y, int xOffset, int yOffset, int player, int oponent) {
         ArrayList<PlayablePosition> tempPlayablePositions = new ArrayList<>();
         if((xOffset == -1 && x == 0) || (yOffset == -1 && y == 0) ||
@@ -139,15 +172,23 @@ public class GameLogic {
 
         else if(tilePanels[x+xOffset][y+yOffset].getOwner() == oponent){
             for (int j = 1; j < size; j++) {
-                if (tilePanels[x + j * xOffset][y + j * yOffset].getOwner() == oponent) {
-                    tilePanels[x + j * xOffset][y + j * yOffset].getPlayablePosition().add(new PlayablePosition(x + j * xOffset, y + j * yOffset));
-                    tempPlayablePositions.add(new PlayablePosition(x + j * xOffset, y + j * yOffset));
+
+                if((x + (j * xOffset) >= size) || (y + (j * yOffset) >= size) ||
+                   (x + (j * xOffset) < 0) || (y + (j * yOffset) < 0)) {
+                    return;
+                }
+                if (tilePanels[x + (j * xOffset)][y + (j * yOffset)].getOwner() == oponent) {
+//                    tilePanels[x + j * xOffset][y + j * yOffset].getPlayablePosition().add(new PlayablePosition(x + j * xOffset, y + j * yOffset));
+                    tempPlayablePositions.add(new PlayablePosition(x + (j * xOffset), y + (j * yOffset)));
                     continue;
-                } else if (tilePanels[x + j * xOffset][y + j * yOffset].getOwner() == 3) {
-                    tilePanels[x + j * xOffset][y + j * yOffset].setPlayable(true);
-                    tilePanels[x + j * xOffset][y + j * yOffset].getPlayablePosition().addAll(tempPlayablePositions);
+                } else if ((tilePanels[x + (j * xOffset)][y + (j * yOffset)].getOwner() == 3 ||
+                        tilePanels[x + (j * xOffset)][y + (j * yOffset)].getOwner() == 2) &&
+                        tempPlayablePositions.size() > 0) {
+
+                    tilePanels[x + (j * xOffset)][y + (j * yOffset)].setPlayable(true);
+                    tilePanels[x + (j * xOffset)][y + (j * yOffset)].getPlayablePosition().addAll(tempPlayablePositions);
                     break;
-                } else if (tilePanels[x + j * xOffset][y + j * yOffset].getOwner() == player) {
+                } else if (tilePanels[x + (j * xOffset)][y + (j * yOffset)].getOwner() == player) {
                     break;
                 }
             }
@@ -162,7 +203,7 @@ public class GameLogic {
 //                    PlayablePosition> turnPanels = tilePanels[i][j].getPlayablePosition();
                     for(int k = 0; k < tilePanels[i][j].getPlayablePosition().size(); k++){
                         PlayablePosition turnPanels = tilePanels[i][j].getPlayablePosition().get(k);
-                        tilePanels[turnPanels.getX()][turnPanels.getY()].paintStone(player);
+                        tilePanels[turnPanels.getX()][turnPanels.getY()].paintStone(player, 1);
                     }
                 }
             }

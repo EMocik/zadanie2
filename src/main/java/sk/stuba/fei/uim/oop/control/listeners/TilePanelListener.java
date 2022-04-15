@@ -27,7 +27,7 @@ public class TilePanelListener implements MouseListener {
             xCoord = Integer.parseInt(stringToInt[0]);
             yCoord = Integer.parseInt(stringToInt[1]);
             System.out.println(xCoord + " " + yCoord);
-            tilePanel.paintStone(1);
+            tilePanel.paintStone(1, 0);
             tilePanel.setOwner(1);
             tilePanel.setPlayable(false);
             boardPanel.setPlayedTile(xCoord, yCoord);
@@ -48,7 +48,7 @@ public class TilePanelListener implements MouseListener {
     @Override
     public void mouseEntered(MouseEvent e) {
         if(tilePanel.isPlayable()){
-            tilePanel.paintStone(1);
+            tilePanel.paintStone(1, 0);
         }
     }
 
