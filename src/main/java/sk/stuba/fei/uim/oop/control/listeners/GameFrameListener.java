@@ -26,6 +26,7 @@ public class GameFrameListener implements ActionListener, KeyListener {
     public void actionPerformed(ActionEvent e) {
         if(e.getSource() == comboBox){
             game.reinitializeFrame((int) Objects.requireNonNull(comboBox.getSelectedItem()));
+            game.getGameLogic().humanTurn();
         }
         if(e.getSource() == buttonRestart){
             game.reinitializeFrame((int)Objects.requireNonNull(comboBox.getSelectedItem()));
@@ -40,6 +41,9 @@ public class GameFrameListener implements ActionListener, KeyListener {
         }
         if(e.getKeyChar() == 'r') {
            game.reinitializeFrame((int) Objects.requireNonNull(comboBox.getSelectedItem()));
+        }
+        if(e.getKeyChar() == 'e'){
+            game.getGameLogic().botTurn();
         }
     }
 

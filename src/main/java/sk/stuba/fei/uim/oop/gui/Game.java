@@ -1,5 +1,6 @@
 package sk.stuba.fei.uim.oop.gui;
 
+import lombok.Getter;
 import sk.stuba.fei.uim.oop.control.GameLogic;
 import sk.stuba.fei.uim.oop.gui.board.*;
 import sk.stuba.fei.uim.oop.control.listeners.GameFrameListener;
@@ -11,19 +12,22 @@ import javax.swing.*;
 import java.awt.*;
 
 public class Game extends JFrame {
-    private int size = 6;
+    private int size;
     private ComboBox comboBox;
     private RestartButton buttonRestart;
     private SideMenu sideMenu;
     private BoardPanel boardPanel;
+    @Getter
+    private GameLogic gameLogic;
 //    private TilePanel tilePanel;
 
 
     public Game(){
         super("Reversi");
-        initComponents(size);
-        setFrameParams();
-        addListeners();
+        this.size = 6;
+        this.initComponents(size);
+        this.setFrameParams();
+        this.addListeners();
 
         sideMenu.add(comboBox);
         sideMenu.add(buttonRestart);
@@ -31,8 +35,11 @@ public class Game extends JFrame {
         this.add(boardPanel, BorderLayout.CENTER);
         this.add(sideMenu, BorderLayout.SOUTH);
         this.setVisible(true);
-        new GameLogic(this, boardPanel, size);
+
+
     }
+
+
 
     public ComboBox getComboBox() {
         return comboBox;
@@ -53,9 +60,13 @@ public class Game extends JFrame {
         this.sideMenu = new SideMenu();
         this.buttonRestart = new RestartButton();
         this.comboBox = new ComboBox();
-        this.boardPanel = new BoardPanel(size);
+        this.boardPanel = new BoardPanel(size, this);
+//        this.gameLogic = new GameLogic(this, boardPanel, size);
+
 //        this.tilePanel = new TilePanel(size);
-        fillRestartedBoard();
+//        fillRestartedBoard();
+        this.reinitializeFrame(size);
+        this.getGameLogic().humanTurn();
     }
 
 
@@ -76,7 +87,8 @@ public class Game extends JFrame {
 
     public void reinitializeFrame(int size){
         this.remove(boardPanel);
-        this.add(boardPanel = new BoardPanel(size));
+        this.add(boardPanel = new BoardPanel(size, this));
+        this.gameLogic = new GameLogic(this, boardPanel, size);
         this.setBoardSize(size);
         this.revalidate();
         this.repaint();

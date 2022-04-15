@@ -28,12 +28,15 @@ public class TilePanelListener implements MouseListener {
             yCoord = Integer.parseInt(stringToInt[1]);
             System.out.println(xCoord + " " + yCoord);
 //            tilePanel.setOwner(1);
-            boardPanel.setPlayTile(tilePanel);
+//            boardPanel.setPlayTile(tilePanel);
             tilePanel.paintStone(1);
             tilePanel.setOwner(1);
             tilePanel.setPlayable(false);
+            boardPanel.setPlayedTile(xCoord, yCoord);
+//            boardPanel.getGameLogic().turnJumpedStones(1);
 //            tilePanel.deletePlayableStone();
-            boardPanel.setRoundEnd(true);
+//            boardPanel.getGameLogic().gameStart();
+            boardPanel.test();
         }
     }
 
