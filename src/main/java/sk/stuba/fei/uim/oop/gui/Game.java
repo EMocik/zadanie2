@@ -4,9 +4,9 @@ import lombok.Getter;
 import sk.stuba.fei.uim.oop.control.GameLogic;
 import sk.stuba.fei.uim.oop.gui.board.*;
 import sk.stuba.fei.uim.oop.control.listeners.GameFrameListener;
-import sk.stuba.fei.uim.oop.gui.menu.ComboBox;
-import sk.stuba.fei.uim.oop.gui.menu.RestartButton;
-import sk.stuba.fei.uim.oop.gui.menu.SideMenu;
+import sk.stuba.fei.uim.oop.gui.menu.*;
+import sk.stuba.fei.uim.oop.gui.menu.labels.BoardSizeLabel;
+import sk.stuba.fei.uim.oop.gui.menu.labels.CurrentPlayerLabel;
 
 import javax.swing.*;
 import java.awt.*;
@@ -17,9 +17,11 @@ public class Game extends JFrame {
     private RestartButton buttonRestart;
     private SideMenu sideMenu;
     private BoardPanel boardPanel;
+    private BoardSizeLabel boardSizeLabel;
+    @Getter
+    private CurrentPlayerLabel currentPlayerLabel;
     @Getter
     private GameLogic gameLogic;
-//    private TilePanel tilePanel;
 
 
     public Game(){
@@ -29,8 +31,10 @@ public class Game extends JFrame {
         this.setFrameParams();
         this.addListeners();
 
+        sideMenu.add(boardSizeLabel, BorderLayout.LINE_START);
         sideMenu.add(comboBox);
-        sideMenu.add(buttonRestart);
+        sideMenu.add(currentPlayerLabel);
+        sideMenu.add(buttonRestart, BorderLayout.LINE_END);
 
         this.add(boardPanel, BorderLayout.CENTER);
         this.add(sideMenu, BorderLayout.SOUTH);
@@ -58,13 +62,11 @@ public class Game extends JFrame {
 
     private void initComponents(int size){
         this.sideMenu = new SideMenu();
+        this.currentPlayerLabel = new CurrentPlayerLabel();
+        this.boardSizeLabel = new BoardSizeLabel(size);
         this.buttonRestart = new RestartButton();
         this.comboBox = new ComboBox();
         this.boardPanel = new BoardPanel(size, this);
-//        this.gameLogic = new GameLogic(this, boardPanel, size);
-
-//        this.tilePanel = new TilePanel(size);
-//        fillRestartedBoard();
         this.reinitializeFrame(size);
         this.getGameLogic().humanTurn();
     }
@@ -89,6 +91,7 @@ public class Game extends JFrame {
         this.remove(boardPanel);
         this.add(boardPanel = new BoardPanel(size, this));
         this.gameLogic = new GameLogic(this, boardPanel, size);
+        boardSizeLabel.setText("Board size : " + size + "x" + size);
         this.setBoardSize(size);
         this.revalidate();
         this.repaint();

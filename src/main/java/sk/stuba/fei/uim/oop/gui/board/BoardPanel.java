@@ -19,15 +19,6 @@ public class BoardPanel extends JPanel {
     @Getter
     private Game game;
 
-//    public TilePanel getPlayTile() {
-//        return playTile;
-//    }
-//
-//    public void setPlayTile(TilePanel playTile) {
-//        this.playTile = playTile;
-//    }
-//
-//    private TilePanel playTile;
 
     public BoardPanel(int size, Game game){
         super();
@@ -35,10 +26,7 @@ public class BoardPanel extends JPanel {
         this.setLayout(new GridLayout(size,size-1, 2, 2));
         this.size = size;
         this.game = game;
-//        this.tilePanel = new TilePanel(size, this);
         this.tilePanels = new TilePanel[size][size];
-//        fillPanel(size);
-//        this.fillRestartedPanel(size);
     }
 
     public boolean isRoundEnd() {
@@ -68,21 +56,6 @@ public class BoardPanel extends JPanel {
 
 
 
-    public void fillPanel(int size){
-        for(int i = 0; i < size; i++){
-            for(int j = 0; j < size; j++) {
-                tilePanels[i][j] = tilePanel = new TilePanel(size, this);
-                tilePanels[i][j].setOwner(3);
-                if ((i + j) % 2 == 0){
-                    tilePanel.setBackground(new Color(3, 218, 1));
-                } else {
-                    tilePanel.setBackground(new Color(3, 149, 1));
-                }
-                tilePanel.setName(i + " " + j);
-                this.add(tilePanel);
-            }
-        }
-    }
 
     public void fillRestartedPanel(int size){
 //        this.setAllUnplayable();

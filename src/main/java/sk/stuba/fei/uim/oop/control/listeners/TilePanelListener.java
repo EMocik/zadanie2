@@ -9,7 +9,7 @@ import java.awt.event.MouseListener;
 
 public class TilePanelListener implements MouseListener {
     private final TilePanel tilePanel;
-    private BoardPanel boardPanel;
+    private final BoardPanel boardPanel;
 
 
     public TilePanelListener(TilePanel tilePanel, BoardPanel boardPanel) {
@@ -27,15 +27,10 @@ public class TilePanelListener implements MouseListener {
             xCoord = Integer.parseInt(stringToInt[0]);
             yCoord = Integer.parseInt(stringToInt[1]);
             System.out.println(xCoord + " " + yCoord);
-//            tilePanel.setOwner(1);
-//            boardPanel.setPlayTile(tilePanel);
             tilePanel.paintStone(1);
             tilePanel.setOwner(1);
             tilePanel.setPlayable(false);
             boardPanel.setPlayedTile(xCoord, yCoord);
-//            boardPanel.getGameLogic().turnJumpedStones(1);
-//            tilePanel.deletePlayableStone();
-//            boardPanel.getGameLogic().gameStart();
             boardPanel.test();
         }
     }

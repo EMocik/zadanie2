@@ -17,6 +17,7 @@ public class TilePanel extends JPanel {
     private final int heightSize;
     private final int widthSize;
     private boolean playable;
+    private BoardPanel boardPanel;
     private ArrayList<PlayablePosition> playablePosition;
     private int numberOfTurnableStones;
 
@@ -27,6 +28,7 @@ public class TilePanel extends JPanel {
         this.setLayout(new BorderLayout());
         this.tileTaken = false;
         this.size = size;
+        this.boardPanel = boardPanel;
         this.playablePosition = new ArrayList<>();
         this.heightSize = 720/size;
         this.widthSize = 720/size;
@@ -94,6 +96,7 @@ public class TilePanel extends JPanel {
             picLabel.setIcon(new ImageIcon(new javax.swing.ImageIcon(Objects.requireNonNull(getClass().getResource("/erikb.png"))).getImage().getScaledInstance(widthSize-15, heightSize-15, Image.SCALE_SMOOTH)));
             this.setOwner(player);
             this.setTileTaken(true);
+//            boardPanel.getGame().
         }
         else if(player == 0) {
             picLabel.setIcon(new ImageIcon(new javax.swing.ImageIcon(Objects.requireNonNull(getClass().getResource("/erikw.png"))).getImage().getScaledInstance(widthSize-15, heightSize-15, Image.SCALE_SMOOTH)));
