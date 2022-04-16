@@ -159,7 +159,6 @@ public class GameLogic {
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
                 if(i == boardPanel.getXCoord() && j == boardPanel.getYCoord()) {
-//                    PlayablePosition> turnPanels = tilePanels[i][j].getPlayablePosition();
                     for(int k = 0; k < tilePanels[i][j].getPlayablePosition().size(); k++){
                         PlayablePosition turnPanels = tilePanels[i][j].getPlayablePosition().get(k);
                         tilePanels[turnPanels.getX()][turnPanels.getY()].paintStone(player);
