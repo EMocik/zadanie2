@@ -9,7 +9,6 @@ public class RestartButton extends JButton{
         super("RESTART");
         this.setBorder(javax.swing.BorderFactory.createLineBorder(new Color(0, 0, 0)));
         this.setFocusable(false);
-        this.setVisible(true);
     }
 
 }

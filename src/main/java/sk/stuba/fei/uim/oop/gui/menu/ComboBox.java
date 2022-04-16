@@ -7,7 +7,6 @@ public class ComboBox extends JComboBox {
 
     public ComboBox(){
         super(sizes);
-        this.setVisible(true);
         this.setFocusable(false);
     }
 

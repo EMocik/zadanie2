@@ -3,7 +3,6 @@ package sk.stuba.fei.uim.oop.control.listeners;
 import sk.stuba.fei.uim.oop.gui.board.BoardPanel;
 import sk.stuba.fei.uim.oop.gui.board.TilePanel;
 
-import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
@@ -17,6 +16,8 @@ public class TilePanelListener implements MouseListener {
         this.boardPanel = boardPanel;
     }
 
+
+
     @Override
     public void mouseClicked(MouseEvent e) {
         if(tilePanel.isPlayable()){
@@ -26,12 +27,13 @@ public class TilePanelListener implements MouseListener {
             stringToInt = e.getComponent().getName().split(" ");
             xCoord = Integer.parseInt(stringToInt[0]);
             yCoord = Integer.parseInt(stringToInt[1]);
-            System.out.println(xCoord + " " + yCoord);
-            tilePanel.paintStone(1, 0);
+            tilePanel.paintStone(1);
             tilePanel.setOwner(1);
             tilePanel.setPlayable(false);
+
+
             boardPanel.setPlayedTile(xCoord, yCoord);
-            boardPanel.test();
+            boardPanel.endHumanTurn();
         }
     }
 
@@ -48,7 +50,7 @@ public class TilePanelListener implements MouseListener {
     @Override
     public void mouseEntered(MouseEvent e) {
         if(tilePanel.isPlayable()){
-            tilePanel.paintStone(1, 0);
+            tilePanel.paintStone(1);
         }
     }
 

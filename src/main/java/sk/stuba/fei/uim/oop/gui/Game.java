@@ -1,6 +1,7 @@
 package sk.stuba.fei.uim.oop.gui;
 
 import lombok.Getter;
+import lombok.Setter;
 import sk.stuba.fei.uim.oop.control.GameLogic;
 import sk.stuba.fei.uim.oop.gui.board.*;
 import sk.stuba.fei.uim.oop.control.listeners.GameFrameListener;
@@ -13,8 +14,11 @@ import javax.swing.*;
 import java.awt.*;
 
 public class Game extends JFrame {
+    @Setter
     private int size;
+    @Getter
     private ComboBox comboBox;
+    @Getter
     private RestartButton buttonRestart;
     private SideMenu sideMenu;
     private BoardPanel boardPanel;
@@ -33,41 +37,22 @@ public class Game extends JFrame {
         this.initComponents(size);
         this.setFrameParams();
         this.addListeners();
-
         this.addToSideMenu();
-
         this.add(boardPanel, BorderLayout.CENTER);
         this.add(sideMenu, BorderLayout.SOUTH);
         this.setVisible(true);
-
-
     }
-
-
-
-    public ComboBox getComboBox() {
-        return comboBox;
-    }
-
-    public RestartButton getButtonRestart() {
-        return buttonRestart;
-    }
-
-    public void setBoardSize(int size){
-        this.size = size;
-    }
-
 
 
 
     private void initComponents(int size){
+        this.boardPanel = new BoardPanel(size, this);
         this.sideMenu = new SideMenu();
         this.currentPlayerLabel = new CurrentPlayerLabel();
         this.currentScoreLabel = new CurrentScoreLabel();
         this.boardSizeLabel = new BoardSizeLabel(size);
         this.buttonRestart = new RestartButton();
         this.comboBox = new ComboBox();
-        this.boardPanel = new BoardPanel(size, this);
         this.reinitializeFrame(size);
         this.getGameLogic().humanTurn();
     }
@@ -99,9 +84,9 @@ public class Game extends JFrame {
     public void reinitializeFrame(int size){
         this.remove(boardPanel);
         this.add(boardPanel = new BoardPanel(size, this));
-        this.gameLogic = new GameLogic(this, boardPanel, size);
+        this.gameLogic = new GameLogic(this, boardPanel,currentScoreLabel, size);
         boardSizeLabel.setText("Board size : " + size + "x" + size);
-        this.setBoardSize(size);
+        this.setSize(size);
         this.revalidate();
         this.repaint();
         this.fillRestartedBoard();
