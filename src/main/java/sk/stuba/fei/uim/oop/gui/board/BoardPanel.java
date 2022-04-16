@@ -30,7 +30,6 @@ public class BoardPanel extends JPanel {
 
     public void endHumanTurn(){
         game.getGameLogic().turnJumpedStones(1);
-        game.getGameLogic().countStones();
         game.getGameLogic().botTurn();
     }
 
@@ -38,7 +37,6 @@ public class BoardPanel extends JPanel {
 
 
     public void fillRestartedPanel(int size){
-        System.out.println("nejdem");
         for(int i = 0; i < size; i++){
             for(int j = 0; j < size; j++) {
                 tilePanels[i][j] = tilePanel = new TilePanel(size, this);

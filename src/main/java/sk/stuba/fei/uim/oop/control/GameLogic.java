@@ -7,7 +7,6 @@ import sk.stuba.fei.uim.oop.gui.board.BoardPanel;
 import sk.stuba.fei.uim.oop.gui.board.PlayablePosition;
 import sk.stuba.fei.uim.oop.gui.board.TilePanel;
 import sk.stuba.fei.uim.oop.gui.menu.labels.CurrentScoreLabel;
-
 import java.util.*;
 
 
@@ -17,6 +16,7 @@ public class GameLogic {
     @Getter @Setter
     private TilePanel[][] tilePanels;
     private final Game game;
+    private boolean canBotPlay, canHumanPlay;
     private final int size;
     private final CurrentScoreLabel currentScoreLabel;
 
@@ -30,17 +30,21 @@ public class GameLogic {
 
     public void humanTurn(){
         game.getCurrentPlayerLabel().setText("Turn: Human(Black)");
+        this.canHumanPlay = false;
+
         this.checkDirections(1, 0);
-        this.checkForPlayableTiles();
+        this.checkForPlayableTiles(1);
         this.countStones();
     }
 
     public void botTurn(){
         game.getCurrentPlayerLabel().setText("Turn: Bot(White)");
+        this.canBotPlay = false;
 
         this.deletePlayableStones();
         this.checkDirections(0, 1);
-
+        this.checkForPlayableTiles(0);
+//        this.countStones();
         this.placeStoneComputer();
         this.deletePlayableStones();
         this.humanTurn();
@@ -120,8 +124,6 @@ public class GameLogic {
         int sizeOfTurnableStones = 0;
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
-
-
                 if(tilePanels[i][j].isPlayable()){
                     if(tilePanels[i][j].getPlayablePosition().size() > sizeOfTurnableStones){
                         sizeOfTurnableStones = tilePanels[i][j].getPlayablePosition().size();
@@ -136,8 +138,8 @@ public class GameLogic {
             tilePanels[xPos][yPos].setPlayable(false);
             this.turnJumpedStonesComputer(new PlayablePosition(xPos, yPos));
         }
-
-
+        else
+            System.out.println("Bot can't play");
     }
 
     private void deletePlayableStones(){
@@ -168,12 +170,17 @@ public class GameLogic {
         }
     }
 
-    private void checkForPlayableTiles() {
+    private void checkForPlayableTiles(int player) {
         for (int i = 0; i < size; i++){
             for (int j = 0; j < size; j++){
                 if(tilePanels[i][j].isPlayable()){
-                    tilePanels[i][j].paintPlayableStone();
-                    System.out.println(i + " " + j);
+                    if(player == 1) {
+                        tilePanels[i][j].paintPlayableStone();
+                        this.canHumanPlay = true;
+                    }
+                    else{
+                        this.canBotPlay = true;
+                    }
                 }
             }
         }
@@ -183,13 +190,12 @@ public class GameLogic {
     public void countStones(){
         int humanStones = 0;
         int botStones = 0;
-        int playableFlag = 0;
+//        int playableFlag = 0;
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
-                if(tilePanels[i][j].isPlayable()){
-                    playableFlag++;
-                }
-
+//                if(tilePanels[i][j].isPlayable()){
+//                    playableFlag++;
+//                }
                 if(tilePanels[i][j].getOwner() == 1){
                     humanStones++;
                 }
@@ -198,16 +204,20 @@ public class GameLogic {
                 }
             }
         }
-        if(playableFlag == 0){
-            if(humanStones > botStones) {
-                game.getCurrentPlayerLabel().setText("You have won!");
+        if(!canHumanPlay){
+            System.out.println("Human can't play");
+            this.checkForPlayableTiles(0);
+            if(!canBotPlay) {
+                if (humanStones > botStones) {
+                    game.getCurrentPlayerLabel().setText("You have won!");
+                } else if (humanStones < botStones) {
+                    game.getCurrentPlayerLabel().setText("The AI has won!");
+                } else {
+                    game.getCurrentPlayerLabel().setText("It's a tie!");
+                }
             }
-            else if(humanStones < botStones){
-                game.getCurrentPlayerLabel().setText("The AI has won!");
-            }
-            else
-            {
-                game.getCurrentPlayerLabel().setText("It's a tie!");
+            else{
+                this.botTurn();
             }
         }
 
