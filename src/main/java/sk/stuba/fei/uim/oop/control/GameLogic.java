@@ -44,7 +44,6 @@ public class GameLogic {
         this.deletePlayableStones();
         this.checkDirections(0, 1);
         this.checkForPlayableTiles(0);
-//        this.countStones();
         this.placeStoneComputer();
         this.deletePlayableStones();
         this.humanTurn();
@@ -119,7 +118,7 @@ public class GameLogic {
         }
     }
 
-    public void placeStoneComputer() {
+    private void placeStoneComputer() {
         int xPos = -1, yPos = -1;
         int sizeOfTurnableStones = 0;
         for (int i = 0; i < size; i++) {
@@ -187,15 +186,11 @@ public class GameLogic {
 
     }
 
-    public void countStones(){
+    private void countStones(){
         int humanStones = 0;
         int botStones = 0;
-//        int playableFlag = 0;
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
-//                if(tilePanels[i][j].isPlayable()){
-//                    playableFlag++;
-//                }
                 if(tilePanels[i][j].getOwner() == 1){
                     humanStones++;
                 }

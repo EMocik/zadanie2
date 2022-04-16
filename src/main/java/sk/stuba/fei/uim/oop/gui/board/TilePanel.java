@@ -17,6 +17,7 @@ public class TilePanel extends JPanel {
     private final JLabel picLabel;
     private final int heightSize;
     private final int widthSize;
+    @Getter
     private boolean playable;
     private final ArrayList<PlayablePosition> playablePosition;
 
@@ -37,9 +38,6 @@ public class TilePanel extends JPanel {
     public ArrayList<PlayablePosition> getPlayablePosition() {
         return playablePosition;
     }
-
-
-    public boolean isPlayable() {return playable;}
 
     public void setPlayable(boolean playable) {
         this.playable = playable;
